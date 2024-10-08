@@ -37,7 +37,7 @@ export default function TaskBoard() {
   }, [selectedTaskList, tasks]);
 
   return (
-    <div className=" max-w-[1000px] h-full w-full flex flex-col">
+    <div className=" max-w-[1000px] h-full w-full flex flex-col ">
       <h2 className="font-bold text-3xl flex items-center gap-1 mb-5">
         Good <CurrentTime/>, Jay! <FaHandMiddleFinger />
       </h2>
@@ -48,7 +48,7 @@ export default function TaskBoard() {
               key={task.id}
               className="flex items-center flex-row justify-between bg-[--bg-sidebar] w-full h-12 px-2 rounded-xl"
             >
-                <TaskCheckBox/>
+                <TaskCheckBox task={task}/>
                 <p>{task.title}</p>
 
                 <div className="flex flex-row items-center gap-1 text-sm bg-gray-200 px-2 rounded-lg ml-auto mr-2 w-">

@@ -62,9 +62,26 @@ html, body, #root {
   height: 100%;
 }
 
-
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 260px;
+  background: white;
+}
 
 :root {
   --bg-color: #f5f5f5;
   --bg-sidebar:#ffffff;
+}
+
+@layer utilities {
+  .parent-class > * {
+    @apply z-[1]; /* All direct children get this style */
+  }
+
+  .hamburger-content > * {
+    @apply z-10
+  }
 }

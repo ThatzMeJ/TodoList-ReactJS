@@ -5,8 +5,8 @@ import axios from 'axios';
 import { useTask } from '../App';
 
 
-export default function TaskOptionsMenu({ entity , type ,task, setTask}) {
-  const { setSelectedTaskList } = useTask();
+export default function TaskOptionsMenu({ entity,type, isHamburger}) {
+  const { selectedTaskList ,setSelectedTaskList } = useTask();
 
   // Function to handle deletion based on entity type
   function deleteEntity() {
@@ -20,6 +20,7 @@ export default function TaskOptionsMenu({ entity , type ,task, setTask}) {
         .catch(error => {
           console.error("Unable to delete task!", error);
         });
+
     } else if (type === 'taskList') {
       axios.delete(`http://localhost:8080/tasklist/delete/${entity.id}`)
         .then((response) => {
@@ -36,7 +37,26 @@ export default function TaskOptionsMenu({ entity , type ,task, setTask}) {
 
   //Function to handle duplication based on entity type
   function duplicateEntity(){
-    if(type === 'taskList') {
+    if (type === 'task') {
+
+      const duplicateTask = {
+        title : `${entity.title}`,
+        startTime : entity.startTime,
+        endTime : entity.endTime
+      }
+      console.log(duplicateTask.startTime)
+
+      axios.post(`http://localhost:8080/task/tasklist/${selectedTaskList.id}/new`, duplicateTask)
+        .then(response => {
+          if(response.status === 200){
+              console.log("Task was duplicated", response.data)
+            
+          }
+        }).catch(error => {
+          console.error("Unable to duplicate task:", error)
+        })
+
+    } else if(type === 'taskList') {
 
       const handleTasklistPost = {
         name : `${entity.name} Copy`
@@ -46,8 +66,6 @@ export default function TaskOptionsMenu({ entity , type ,task, setTask}) {
         .then(response => {
           if(response.status === 200){
             console.log("Tasklist create:", response.data)
-            console.log(response)
-            
           }
         })
         .catch(error => {
@@ -56,18 +74,17 @@ export default function TaskOptionsMenu({ entity , type ,task, setTask}) {
     }
   }
 
-  
   return (
-    <Menu as="div" className="relative inline-block">
+    <Menu as="div" className={`relative inline-block ${isHamburger ? '  top-[-2px] ' : ''}`}>
       <div>
-        <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-2 py-2 text-sm  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+        <MenuButton className={`inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white  text-sm  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray- ${isHamburger ? 'px-2 py-[6px] ' : 'px-2 py-2'}`}>
           <CiMenuKebab/>
         </MenuButton>
       </div>
 
       <MenuItems
         transition
-        className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+        className="absolute right-0 z-10 mt-2 w-40  origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
       >
         <div className="py-1">
           <MenuItem>

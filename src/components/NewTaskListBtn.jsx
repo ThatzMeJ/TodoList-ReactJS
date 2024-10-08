@@ -1,9 +1,7 @@
 import React from "react";
 import { FaPlus } from "react-icons/fa";
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import {
-  Dialog,
-  DialogPanel,
   Popover,
   PopoverButton,
   PopoverPanel,
@@ -33,7 +31,6 @@ export default function SidebarBtn() {
   };
 
   return (
-    <>
       <Popover className="relative">
         {({ close }) => (
           <>
@@ -45,7 +42,7 @@ export default function SidebarBtn() {
             <PopoverPanel
               transition
               anchor="right start"
-              className="absolute w-[300px] h-52 bg-white transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 rounded-2xl text-black p-4"
+              className="absolute w-[300px] h-52 bg-white transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 rounded-2xl text-black p-4 "
             >
               <div className="flex flex-col gap-2">
                 <form action="post" onSubmit={handleInput}>
@@ -83,6 +80,6 @@ export default function SidebarBtn() {
           </>
         )}
       </Popover>
-    </>
+    
   );
 }

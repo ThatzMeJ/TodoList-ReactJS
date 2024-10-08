@@ -20,7 +20,8 @@ export default function AddNewTaskBtn() {
       </button> */}
 
       <Popover className="mt-auto relative">
-        <PopoverButton className="bg-black text-white w-[52%] h-[60px] flex flex-row items-center justify-start rounded-3xl text-sm pl-2 gap-2 mt-auto mb-5 hover:opacity-70"
+        <PopoverButton className="bg-black text-white w-[52%]
+        min-w-64 h-[60px] flex flex-row items-center justify-start rounded-3xl text-sm pl-2 gap-2 mt-auto mb-5 hover:opacity-70"
         
         >
           <FaPlus />

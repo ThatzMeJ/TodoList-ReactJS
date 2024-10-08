@@ -7,7 +7,7 @@ export default function CurrentTime() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentTime(new Date())
-    }, 60000) // 60,000 milliseconds = 1 minute
+    }, 600000) // 60,000 milliseconds = 1 minute
 
     return () => clearInterval(intervalId)
   }, [])
