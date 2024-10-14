@@ -2,11 +2,12 @@ import React from 'react'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { CiMenuKebab } from "react-icons/ci";
 import axios from 'axios';
-import { useTask } from '../App';
-
+import TaskContext from "../hooks/TaskContext";
+import { useContext } from 'react';
 
 export default function TaskOptionsMenu({ entity,type, isHamburger}) {
-  const { selectedTaskList ,setSelectedTaskList } = useTask();
+  const { selectedTaskList, setSelectedTaskList } = useContext(TaskContext);
+
 
   // Function to handle deletion based on entity type
   function deleteEntity() {

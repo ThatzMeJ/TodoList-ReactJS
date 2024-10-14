@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useTask } from "../App";
+import React, { useContext } from "react";
+import TaskContext from "../hooks/TaskContext";
 import axios from "axios";
 import { CiClock2 } from "react-icons/ci";
 import { FaHandMiddleFinger } from "react-icons/fa6";
@@ -7,10 +7,13 @@ import AddNewTaskBtn from "./AddNewTaskBtn";
 import TaskOptionsMenu from "./TaskOptionsMenu";
 import CurrentTime from "./CurrentTime";
 import TaskCheckBox from "./TaskCheckBox";
+import useFetchTask from "../hooks/useFetchTask";
+import MyDatePicker from "./MyDatePicker";
+
 
 export default function TaskBoard() {
-  const { selectedTaskList,  } = useTask();
-  const [tasks, setTasks] = useState([]);
+  const { selectedTaskList,  } = useContext(TaskContext);
+  const [tasks] = useFetchTask();
 
   const formatTime = (string) => {
     const date = new Date(string); // Create Date object from the string
@@ -22,26 +25,14 @@ export default function TaskBoard() {
     return `${hours}:${minutes}`; // Return formatted time
   };
 
-  useEffect(() => {
-    if (selectedTaskList !== null) {
-      // Make the API call only if a task is selected
-      axios
-        .get(`http://localhost:8080/task/tasklist/${selectedTaskList.id}`)
-        .then((response) => {
-          setTasks(response.data);
-        })
-        .catch((error) => {
-          console.error("There was an error fetching the tasks!", error);
-        });
-    }
-  }, [selectedTaskList, tasks]);
-
+  
+  
   return (
     <div className=" max-w-[1000px] h-full w-full flex flex-col ">
       <h2 className="font-bold text-3xl flex items-center gap-1 mb-5">
         Good <CurrentTime/>, Jay! <FaHandMiddleFinger />
       </h2>
-      {selectedTaskList !== null ? (
+      {selectedTaskList !== null && tasks ? (
         <ul className=" w-full flex flex-col gap-2">
           {tasks.map((task) => (
             <li
@@ -66,7 +57,7 @@ export default function TaskBoard() {
         <>
         </>
       )}
-
+      
       <AddNewTaskBtn />
     </div>
   );

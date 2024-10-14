@@ -2,23 +2,18 @@ import React from 'react'
 import { Checkbox } from '@headlessui/react'
 import { useState } from 'react'
 import { FaCheck } from "react-icons/fa";
-import axios from 'axios';
-
+import useDeleteTask from '../hooks/useDeleteTask';
 
 function TaskCheckBox({task}) {
   const [enabled, setEnabled] = useState(false)
+  const { deleteTask } = useDeleteTask()
+
 
   const handleClick = () => {
-    axios.delete(`http://localhost:8080/task/delete/${task.id}`)
-        .then(response => {
-          if(response.status === 200){
-            console.log('Task was successfully deleted:', response.data)
-
-          }
-        }).catch(error => {
-          console.error("Unable to delete task: ",error)
-        })
+    deleteTask(task.id)
   }
+
+
   return (
     <Checkbox
       checked={enabled}

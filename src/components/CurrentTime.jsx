@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from 'react'
+import useFetchCurrentTime from '../hooks/useFetchCurrentTime'
 
 export default function CurrentTime() {
-  const [currentTime, setCurrentTime] = useState(new Date())
-   let time = currentTime.getHours()
+  let {currTime ,timeZone} = useFetchCurrentTime()
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentTime(new Date())
-    }, 600000) // 60,000 milliseconds = 1 minute
-
-    return () => clearInterval(intervalId)
-  }, [])
   return (
     <span>
-      {time >= 5 && time <= 11 ? 'Morning' : time >= 12 && time <= 17 ? "Afternoon" : "Evening"}
+      {timeZone}
     </span>
   )
 }

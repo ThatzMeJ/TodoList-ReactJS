@@ -1,24 +1,14 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useTask } from "../App";
+import TaskContext from "../hooks/TaskContext";
 import TaskOptionsMenu from "./TaskOptionsMenu";
 import { motion } from "framer-motion";
+import { useFetchTaskList } from "../hooks/useFetchTaskList";
+import { useContext } from "react";
 
 export default function TaskListNav({ isHamburger, variants }) {
-  const [tasklist, setTaskList] = useState([]);
+  // No need to wrap useFetchTaskList with useState.
+  const { tasklist, error } = useFetchTaskList();
 
-  const { selectedTaskList, setSelectedTaskList } = useTask();
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:8080/tasklist/all")
-      .then((response) => {
-        setTaskList(() => response.data);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the tasks!", error);
-      });
-  }, [tasklist]);
+  const { selectedTaskList, setSelectedTaskList } = useContext(TaskContext);
 
   // Function to handle task list selection/deselection
   const handleTaskListClick = (task) => {
@@ -31,35 +21,32 @@ export default function TaskListNav({ isHamburger, variants }) {
     }
   };
 
-  console.log(selectedTaskList);
-
   return (
     <>
       {!isHamburger && (
         <div>
           <ul className="flex flex-col gap-1 max-h-[80%]">
-            {tasklist.map((task) => (
-              <li
-                key={task.id}
-                className={`w-full p-1 rounded-md ${
-                  selectedTaskList !== null && selectedTaskList.id === task.id
-                    ? "bg-gray-300"
-                    : ""
-                } hover:bg-gray-200`}
-                onClick={() => handleTaskListClick(task)}
-              >
-                <a
-                  href="#"
-                  className="flex flex-row justify-between items-center"
+            {tasklist &&
+              tasklist.map((task) => (
+                <li
+                  key={task.id}
+                  className={`w-full p-1 rounded-md 
+                    flex flex-row justify-between items-center hover:cursor-pointer
+                    ${
+                      selectedTaskList !== null &&
+                      selectedTaskList.id === task.id
+                        ? "bg-gray-300"
+                        : ""
+                    } hover:bg-gray-200`}
+                  onClick={() => handleTaskListClick(task)}
                 >
                   {task.name}
                   <div className="bg-gray-100 h-full px-2 rounded-lg ml-auto mr-2">
-                    {task.tasks.length}
+                    {tasklist === null ? 0 : task.tasks.length}
                   </div>
                   <TaskOptionsMenu entity={task} type={"taskList"} />
-                </a>
-              </li>
-            ))}
+                </li>
+              ))}
           </ul>
         </div>
       )}
